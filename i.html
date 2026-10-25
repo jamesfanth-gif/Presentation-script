@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>小食地圖 SnackMap - 專題匯報講稿 (三人平均分工版 · 15頁PPT對照)</title>
+  <style>
+    :root {
+      --primary: #f76707;
+      --primary-light: #fff4e6;
+      --primary-dark: #d9480f;
+      --text-main: #212529;
+      --text-muted: #6c757d;
+      --bg-page: #f8f9fa;
+      --bg-card: #ffffff;
+      --border-color: #e9ecef;
+      --action-color: #0c8599;
+      --cue-bg: #e6fcf5;
+      --cue-text: #0ca678;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      line-height: 1.68;
+      padding: 20px 16px 80px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* 頂部 Header */
+    header {
+      background: linear-gradient(135deg, #ff922b 0%, #d9480f 100%);
+      color: #fff;
+      padding: 24px 22px;
+      border-radius: 16px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 16px rgba(217, 72, 15, 0.22);
+    }
+    header h1 { font-size: 24px; font-weight: 800; margin-bottom: 6px; }
+    header p { font-size: 14px; opacity: 0.94; }
+    .badge-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    .badge {
+      background: rgba(255, 255, 255, 0.22);
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-weight: 600;
+    }
+
+    /* 講者切換導航 Bar (Sticky) */
+    .tab-bar {
+      position: sticky;
+      top: 10px;
+      z-index: 100;
+      display: flex;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      padding: 8px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      margin-bottom: 24px;
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 10px 12px;
+      font-size: 14px;
+      font-weight: 700;
+      border: none;
+      background: transparent;
+      border-radius: 8px;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+    .tab-btn.active {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(247, 103, 7, 0.3);
+    }
+
+    .font-control {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .font-btn {
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      background: #fff;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .speech-section { display: none; }
+    .speech-section.active { display: block; }
+
+    .speaker-meta-card {
+      background: var(--primary-light);
+      border-left: 5px solid var(--primary);
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    .speaker-meta-card h2 { font-size: 18px; color: var(--primary-dark); margin-bottom: 4px; }
+    .speaker-meta-card p { font-size: 13.5px; color: #495057; }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 18px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #f1f3f5;
+    }
+    .slide-badge {
+      background: #e9ecef;
+      color: #495057;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+    .slide-title { font-size: 16px; font-weight: 700; color: #212529; }
+    .timing-badge { font-size: 12px; color: var(--text-muted); font-weight: 600; }
+
+    .cue-box {
+      background: var(--cue-bg);
+      border: 1px dashed var(--cue-text);
+      color: #087f5b;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 12px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .speech-text {
+      font-size: 16px;
+      color: #2b2f33;
+      margin-bottom: 10px;
+      line-height: 1.75;
+    }
+    .speech-text strong {
+      color: var(--primary-dark);
+      background: #fff9db;
+      padding: 0 4px;
+      border-radius: 3px;
+    }
+    .tech-highlight {
+      display: inline-block;
+      font-family: SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 13.5px;
+      background: #e7f5ff;
+      color: #1971c2;
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin: 0 2px;
+    }
+
+    .qa-box {
+      background: #fff;
+      border: 2px solid #339af0;
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 24px;
+    }
+    .qa-title { font-size: 15px; font-weight: 700; color: #1c7ed6; margin-bottom: 8px; }
+    .qa-item { margin-bottom: 10px; font-size: 14px; }
+    .qa-q { font-weight: 700; color: #343a40; }
+    .qa-a { color: #495057; margin-top: 3px; }
+
+    @media print {
+      body { background: #fff; padding: 0; }
+      .tab-bar, .font-control { display: none; }
+      .speech-section { display: block !important; page-break-after: always; }
+      .card { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container" id="mainContainer">
+
+  <header>
+    <h1>🍜 小食地圖 SnackMap · 專題匯報講稿</h1>
+    <p>三人順序均分版 · 嚴密對照 15 頁 PPT · 全程順序演繹不跳頁 · 每人約 3.5 ~ 4 分鐘</p>
+    <div class="badge-bar">
+      <span class="badge">總時長：約 11 分鐘 (留 3-4 分鐘 Q&A)</span>
+      <span class="badge">投影片：Slide 1 – 15 精確對應</span>
+      <span class="badge">線上部署：https://jamesfanth-gif.github.io/HKCT_PTDAE_Group-Project/</span>
+    </div>
+  </header>
+
+  <!-- 講者切換 Tab -->
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchSpeaker('speaker1')">👤 第一位講者 (Slide 1–5)</button>
+    <button class="tab-btn" onclick="switchSpeaker('speaker2')">👤 第二位講者 (Slide 6–10)</button>
+    <button class="tab-btn" onclick="switchSpeaker('speaker3')">👤 第三位講者 (Slide 11–15)</button>
+    <button class="tab-btn" onclick="switchSpeaker('all')">📑 完整總覽 (全部 15 頁)</button>
+  </div>
+
+  <div class="font-control">
+    <span style="font-size: 12px; color: var(--text-muted); align-self: center;">字體大小：</span>
+    <button class="font-btn" onclick="adjustFontSize(-1)">A -</button>
+    <button class="font-btn" onclick="adjustFontSize(1)">A +</button>
+  </div>
+
+  <!-- =========================================================================
+       第一位講者：Slide 1 – 5
+       ========================================================================= -->
+  <section id="speaker1" class="speech-section active">
+    <div class="speaker-meta-card">
+      <h2>【第一部分】專案啟動、掃碼實測、痛點客群與架構總覽</h2>
+      <p><strong>負責範圍</strong>：Slide 1 – 5 (共 5 頁) | <strong>預估時間</strong>：約 3.5 分鐘 | <strong>角色定位</strong>：產品經理（講清痛點、客群、評分對照與三層式架構，引導掃碼）</p>
+    </div>
+
+    <!-- Slide 1 -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <span class="slide-badge">Slide 1</span>
+          <span class="slide-title">封面：專案主題與技術核心架構</span>
+        </div>
+        <span class="timing-badge">0:00 - 0:35</span>
+      </div>
+      <div class="cue-box">📢【動作】精神飽滿站出台前，眼神面向導師與同學，向身旁兩位組員點頭示意開始。</div>
+      <div class="speech-text">
+        「導師、各位同學，大家好！我們這組的專題研習題目是<strong>《小食地圖 SnackMap》</strong>—— 一個專為香港街頭小食量身打造的評分、口袋收藏與 Google Maps 一鍵導航應用程式。」
+      </div>
+      <div class="speech-text">
+        「我們組員包括<strong>范子軒、王振威與魏凱耀</strong>。本作的核心技術架構採用了 <strong>Ionic 9、ES6 OOP Class、Google Maps 深度整合、TheMealDB 公開 API 以及 localStorage 持久化儲存</strong>。」
+      </div>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <span class="slide-badge">Slide 2</span>
+          <span class="slide-title">AGENDA：匯報流程與現場掃碼體驗 (SCAN ME)</span>
+        </div>
+        <span class="timing-badge">0:35 - 1:15</span>
+      </div>
+      <div class="cue-box">📢【動作】翻至 Slide 2，右手明確指向投影片上的橘色「SCAN ME」實體 QR Code。</div>
+      <div class="speech-text">
+        「在正式進入內容前，大家可以看到投影片左側有一個<strong>實體 QR Code</strong>。我們已經將《小食地圖》完整部署到了 GitHub Pages！非常歡迎導師與同學現在隨時用手機相機掃描，一邊聽我們的匯報，一邊在手機上同步實測 App 的流暢體驗！」
+      </div>
+      <div class="speech-text">
+        「今天的匯報順序分為四大部分：首先由我為大家介紹<strong>專題背景、客群痛點與評分對照</strong>；第二部分由第二位組員剖析<strong>技術架構、Class 模型並切換至瀏覽器進行核心功能 Demo</strong>；最後由第三位組員示範<strong>防呆容錯、公開 API 串接與開發技術攻關總結</strong>。」
+      </div>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <span class="slide-badge">Slide 3</span>
+          <span class="slide-title">01 · PROBLEM &amp; AUDIENCE：使用者痛點與專案定位</span>
+        </div>
+        <span class="timing-badge">1:15 - 2:10</span>
+      </div>
+      <div class="cue-box">📢【動作】翻至 Slide 3，語氣帶出日常生活中的真實共鳴。</div>
+      <div class="speech-text">
+        「首先看我們的專題痛點。日常在香港吃街頭小食，經常遇到四大困擾：
+        第一是<strong>遺忘難尋</strong>：吃到好吃的魚蛋或雞蛋仔，過幾天完全忘記店名叫什麼、在街角的哪個位置；
+        第二是<strong>資訊雜亂</strong>：大眾食評平台充滿商業廣告與宣傳，缺乏個人的真實紀錄；
+        第三是<strong>導航繁瑣</strong>：在手機備忘錄抄低店名，想去時還要手動複製貼上搜尋地圖；
+        第四是<strong>欠缺分析</strong>：一般筆記軟件無法按星級評分、分區或類別進行統計。」
+      </div>
+      <div class="speech-text">
+        「因此，《小食地圖》的定位非常清晰：它是一本<strong>專屬於食客個人的口袋美食手帳</strong>。服務三大核心客群：
+        <strong>學生與街坊</strong>放學放工 30 秒快速登記；
+        <strong>深度美食獵人</strong>精確記錄 6 大類別、評分與個人標籤；
+        以及<strong>訪港遊客</strong>利用 Google Maps 一鍵導航與『今日食乜好』隨機抽籤，達成記錄、評分、統計與導航的完整閉環！」
+      </div>
+    </div>
+
+    <!-- Slide 4 -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <span class="slide-badge">Slide 4</span>
+          <span class="slide-title">01 · RUBRIC COMPLIANCE：評分標準 100% 嚴格對照與超額實現</span>
+        </div>
+        <span class="timing-badge">2:10 - 2:55</span>
+      </div>
+      <div class="cue-box">📢【動作】翻至 Slide 4，手勢引導導師看投影片上的評分對照矩陣，展示規劃嚴謹。</div>
+      <div class="speech-text">
+        「在功能規劃上，我們 100% 嚴格對照了課程專題的評分標準，並全部做到超額完成：
+        在<strong>多頁面結構</strong>上，標準要求 ≥2 頁，我們實作了 <span class="tech-highlight">ion-tabs</span> 4 大完整功能分頁流暢切換；
+        在<strong>資料動態渲染</strong>上，使用 ES6 Class 配合 <span class="tech-highlight">map()</span> 與 <span class="tech-highlight">join()</span> 動態生成自訂卡片與純 CSS 分類長條圖；」
+      </div>
+      <div class="speech-text">
+        「在<strong>輸入表單</strong>上，<span class="tech-highlight">ion-modal</span> 提供多達 8 個完整欄位；
+        在<strong>互動功能</strong>上，具備即時搜尋、Chips 篩選、4 種排序與 Google Maps 深度導航；
+        在<strong>資料持久化</strong>上，透過 <span class="tech-highlight">localStorage</span> 與 JSON 序列化，支援備份匯出與示範資料還原；
+        最後在 <strong>UI/UX 與防錯</strong>上，提供行內紅字警告、二次確認彈窗、Toast 通知與深色模式。」
+      </div>
+    </div>
+
+    <!-- Slide 5 -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <span class="slide-badge">Slide 5</span>
+          <span class="slide-title">02 · SYSTEM ARCHITECTURE：高內聚三層式架構設計</span>
+        </div>
+        <span class="timing-badge">2:55 - 3:35</span>
+      </div>
+      <div class="cue-box">📢【動作】翻至 Slide 5，強調系統設計原則與資料流向。</div>
+      <div class="speech-text">
+        「為了讓程式碼好維護、好擴充，我們採用了<strong>高內聚的三層式架構</strong>：
+        最上層是<strong>VIEW 視圖展示層</strong>，運用 Ionic 9 的 Tabs、Modal、Searchbar 及 Alert 元件；
+        中間是<strong>LOGIC 控制邏輯層</strong>，負責多維度過濾演算法、單一父容器的事件委派，以及前端防呆檢核；
+        最底層是<strong>DATA 資料持久層</strong>，由 <span class="tech-highlight">FoodStall</span> 與 <span class="tech-highlight">StallStore</span> 雙 Class 封裝。」
+      </div>
+      <div class="speech-text">
+        「整套 App 的三大核心原則是：<strong>完全由資料驅動畫面、統一調度資料變更觸發重繪，以及雙 Class 徹底解耦資料與 UI 邏輯</strong>。」
+      </div>
+      <div class="cue-box">🤝【交棒台詞】身體微轉向第二位組員，伸手引介，自然退後半步。</div>
+      <div class="speech-text">
+        「那麼，這個雙 Class 模型底層是如何運作，又是如何與 Google Maps 深度整合的呢？現在交給第二位組員為大家剖析並進行實機功能操作！」
+      </div>
+    </div>
+
+    <!-- 第一部分防守 Q&A -->
+    <div class="qa-box">
+      <div class="qa-title">💡 第一部分講者 · 專屬防守問答備忘</div>
+      <div class="qa-item">
+        <div class="qa-q">Q: 為什麼定位為離線優先？市面上已經有 OpenRice 為什麼還要自己做？</div>
+        <div class="qa-a">A: OpenRice 等平台商業宣傳過多、介面資訊太雜，且必須連網才能使用；《小食地圖》是食客個人的私房口袋手帳，沒有廣告干擾，離線也能秒開記錄，更專注於個人真實評分與快速記錄。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       第二位講者：Slide 6 – 10
+       ========================================================================= -->
+  <section id="speaker2" class="speech-section">
+    <div class="speaker-meta-card">
+      <h2>【第二部分】Class 模型、地圖整合、課堂技巧與核心 Demo</h2>
+      <p><strong>負責範圍</strong>：Slide 6 – 10 (共 5 頁) | <strong>預估時間</strong>：約 4 分鐘 | <strong>角色定位</strong>：架構師兼核心操作員（剖析 OOP 模型，並切入瀏覽器流暢演示四大功能）</p>
+    </div>
+
+    <!-- Slide 6 -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <span class="slide-badge">Slide 6</span>
+          <span class="slide-title">02 · DATA MODEL &amp; MAP INTEGRATION：Class 模型與 Google Maps 深度整合</span>
+        </div>
+        <span class="timing-badge">0:00 - 0:50</span>
+      </div>
+      <div class="cue-box">📢【動作】上前接過發言權，翻至 Slide 6，語氣專業自信。</div>
+      <div class="speech-text">
+        「大家好，我是第二位組員。在資料模型層面，我們封裝了兩個核心 ES6 Class：
+        在實體模型 <span class="tech-highlight">FoodStall</span> 中，我們實作了創新加分項方法 <span class="tech-highlight">mapURL()</span>。」
+      </div>
+      <div class="speech-text">
+        「這裡有三大亮點：第一，採用 <strong>Google Maps 官方 Universal Link</strong>，手機端自動喚起原生 Google Maps App，電腦端則在新分頁打開網頁版；
+        第二，使用 <span class="tech-highlight">encodeURIComponent</span> 處理『咖喱魚蛋 旺角』等中文地名，杜絕亂碼及網址中斷；
+        第三，在每張卡片底部以及『今日推介』特色卡，均提供<strong>雙處直連入口</strong>，大幅簡化找路步驟。」
+      </div>
+    </div>
+
+    <!-- Slide 7 -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <span class="slide-badge">Slide 7</span>
+          <span class="slide-title">02 · COURSE INTEGRATION：課堂技巧全期對照 (Lesson 1 - 10)</span>
+        </div>
+        <span class="timing-badge">0:50 - 1:25</span>
+      </div>
+      <div class="cue-box">📢【動作】翻至 Slide 7，快速點出全學期 10 堂課技能融會貫通。</div>
+      <div class="speech-text">
+        「大家從 Slide 7 的清單可以看到，我們全面貫通了全學期 10 堂課的重點：
+        從 <strong>L1–L2</strong> 的 CDN 引入、CSS Variables 與深色模式；
+        到 <strong>L3–L4</strong> 的陣列 <span class="tech-highlight">map()</span> 渲染、<span class="tech-highlight">ion-modal</span> 與 FAB 浮動按鈕；
+        再到 <strong>L5–L6</strong> 的事件委派、5 大欄位驗證與 <span class="tech-highlight">localStorage</span>；
+        以至 <strong>L7–L8</strong> 的 UI/UX 四大原則，以及 <strong>L9–L10</strong> 的雙 Class 物件導向與 TheMealDB API 串接，實打實地應用在產品之中。」
+      </div>
+    </div>
+
+    <!-- Slide 8 (現場實機 Demo Stage 1) -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <span class="slide-badge">Slide 8</span>
+          <span class="slide-title">03 · LIVE DEMO PART 1：多頁面、即時搜尋篩選與新增表單</span>
+        </div>
+        <span class="timing-badge">1:25 - 2:30</span>
+      </div>
+      <div class="cue-box">💻【螢幕切換】按 Alt+Tab 切換至瀏覽器畫面，全螢幕展示已部署的 App。</div>
+      <div class="speech-text">
+        「現在我切換到瀏覽器，為大家現場演示 App 的運行狀況：」
+      </div>
+      <div class="speech-text">
+        「<strong>【演示 1：多維度即時搜尋與 Chips 篩選】</strong><br>
+        首先在『探索』頁頂部，我們可以在搜尋列輸入『魚蛋』或分區『深水埗』，畫面即時模糊比對過濾；點擊自製的類別 Chips（如『街頭小食』）或排序 Chips（如『評分高→低』），單擊即刻重排，操作比傳統下拉選單快上 2 個步驟！」
+      </div>
+      <div class="speech-text">
+        「<strong>【演示 2：全功能輸入彈窗與即時重繪】</strong><br>
+        點擊右下角的 ＋ 號浮動按鈕，彈出 <span class="tech-highlight">ion-modal</span>。表單具備 8 個完整欄位，我們在自製的五星評分器點選 5 顆星，輸入小食名稱、選擇分區並儲存——大家看到底部彈出 Toast 提示成功，卡片清單由 <span class="tech-highlight">createCardHTML()</span> 即時重繪，完全無需手動重新整理網頁！」
+      </div>
+    </div>
+
+    <!-- Slide 9 (現場實機 Demo Stage 2) -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <span class="slide-badge">Slide 9</span>
+          <span class="slide-title">03 · LIVE DEMO PART 2：亮點展示：Google Maps 導航與今日推介</span>
+        </div>
+        <span class="timing-badge">2:30 - 3:15</span>
+      </div>
+      <div class="cue-box">💻【瀏覽器演示】操作卡片上的「地圖」按鈕與右上角隨機按鈕。</div>
+      <div class="speech-text">
+        「<strong>【演示 3：Google Maps 一鍵直達導航】</strong><br>
+        每張卡片底部都有一個綠色『地圖』按鈕。點擊之後，系統會以 encodeURIComponent 安全封裝中文地名，在新分頁打開 Google Maps 並自動搜尋路線，在手機上更可直接喚醒 Google Maps App！」
+      </div>
+      <div class="speech-text">
+        「<strong>【演示 4：『今日食乜好』隨機抽籤】</strong><br>
+        點擊工具列右上角的隨機抽籤按鈕，演算法會從當前篩選清單隨機抽出一間小食，更新特色橘色大卡片，並以 <span class="tech-highlight">scrollIntoView</span> 平滑捲動鎖定推薦卡，解決選擇困難症！」
+      </div>
+    </div>
+
+    <!-- Slide 10 (現場實機 Demo Stage 3) -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <span class="slide-badge">Slide 10</span>
+          <span class="slide-title">03 · LIVE DEMO PART 3：數據統計、收藏夾與深色模式</span>
+        </div>
+        <span class="timing-badge">3:15 - 3:55</span>
+      </div>
+      <div class="cue-box">💻【瀏覽器演示】點擊切換底部 Tabs 至「數據統計」、「我的收藏」及「設定」。</div>
+      <div class="speech-text">
+        「<strong>【演示 5：純 CSS 繪製類別長條圖】</strong><br>
+        點擊底部『數據統計』Tab：上方的記錄總數、平均評分由 <span class="tech-highlight">StallStore.getStats()</span> 透過陣列 reduce 自動計算；下方的長條圖<strong>免載外部肥大 Chart 函式庫</strong>，以純 CSS 百分比寬度渲染，載入極快且有平滑過渡動畫！」
+      </div>
+      <div class="speech-text">
+        「<strong>【演示 6：深色模式切換與持久記憶】</strong><br>
+        切換到『設定』頁打開深色模式 Toggle，全域配色瞬間切換；而且偏好會被保存在 localStorage，重新整理網頁依然保持深色主題。」
+      </div>
+      <div class="cue-box">🤝【交棒台詞】停留在設定頁，微笑道謝交棒。</div>
+      <div class="speech-text">
+        「除了基礎的記錄與圖表，我們的 App 還具備嚴謹的防呆容錯工程與外部公開 API 串接，接下來交給第三位組員為大家繼續示範！」
+      </div>
+    </div>
+
+    <!-- 第二部分防守 Q&A -->
+    <div class="qa-box">
+      <div class="qa-title">💡 第二部分講者 · 專屬防守問答備忘</div>
+      <div class="qa-item">
+        <div class="qa-q">Q: 為什麼列表點擊採用事件委派 (Event Delegation)？每個按鈕加監聽器不行嗎？</div>
+        <div class="qa-a">A: 如果列表有 50 間小食，每張卡片有收藏、編輯、刪除、地圖 4 個按鈕，就要綁定 200 個監聽器，非常消耗記憶體；改在父容器只放 1 個監聽器，透過 `event.target.closest('[data-action]')` 攔截，既節省資源又杜絕動態增刪時的記憶體洩漏。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       第三位講者：Slide 11 – 15
+       ========================================================================= -->
+  <section id="speaker3" class="speech-section">
+    <div class="speaker-meta-card">
+      <h2>【第三部分】防呆容錯、公開 API、技術攻關與分工答辯</h2>
+      <p><strong>負責範圍</strong>：Slide 11 – 15 (共 5 頁) | <strong>預估時間</strong>：約 4 分鐘 | <strong>角色定位</strong>：體驗工程師（展示防呆機制、API 串接、排錯心得，引導答辯 Q&A）</p>
+    </div>
+
+    <!-- Slide 11 (現場實機 Demo Stage 4) -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <span class="slide-badge">Slide 11</span>
+          <span class="slide-title">03 · LIVE DEMO PART 4：健全性工程：5 種表單防呆與友善空狀態</span>
+        </div>
+        <span class="timing-badge">0:00 - 1:05</span>
+      </div>
+      <div class="cue-box">💻【接手操作】直接上前接過滑鼠，在瀏覽器操作表單防呆與空狀態。</div>
+      <div class="speech-text">
+        「大家好，我是第三位組員，我接著為大家展示進階的防呆健全性工程：」
+      </div>
+      <div class="speech-text">
+        「<strong>【演示 7：5 種嚴格表單防呆機制】</strong><br>
+        打開新增表單，如果我們故意把小食名稱留空、或者字數少於 2 個字直接點擊儲存——大家看到欄位下方立刻彈出<strong>行內即時紅字警告</strong>，同時跳出 <span class="tech-highlight">ion-alert</span> 總結彈窗阻截送出；我們同時限制食後感最多 120 字防止卡片爆版，並用正則表達式校驗日期與標籤。」
+      </div>
+      <div class="speech-text">
+        「<strong>【演示 8：符合 L7 UI/UX 原則的友善空狀態】</strong><br>
+        當我們搜尋一個不存在的名字時，畫面不會一片死白，而是顯示放大鏡圖示並提示『搵唔到相符小食』，引導清除篩選；在『我的收藏』為空時，也會顯示愛心圖示指引回到探索頁加入收藏，杜絕白屏死寂。」
+      </div>
+    </div>
+
+    <!-- Slide 12 (現場實機 Demo Stage 5) -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <span class="slide-badge">Slide 12</span>
+          <span class="slide-title">03 · LIVE DEMO PART 5 (BONUS)：TheMealDB 公開 API 串接</span>
+        </div>
+        <span class="timing-badge">1:05 - 1:50</span>
+      </div>
+      <div class="cue-box">💻【瀏覽器演示】切回探索頁，點擊「今日食譜靈感」卡片上的「抽一餐」按鈕。</div>
+      <div class="speech-text">
+        「<strong>【演示 9：TheMealDB 異步 API 串接與三態管理】</strong><br>
+        在探索頁頂部，我們串接了 TheMealDB 公開 REST API。點擊『抽一餐』按鈕，按鈕會即時鎖定並出現 <span class="tech-highlight">ion-spinner</span> 點狀載入動畫；成功後非同步展示海外菜式名稱與封面圖片。」
+      </div>
+      <div class="speech-text">
+        「特別在架構上，我們引入了 <span class="tech-highlight">AbortController</span> 設定 <strong>8 秒超時自動中斷</strong>；若離線斷網會優雅降級顯示離線圖示；並監聽圖片 error 事件自動移除破損圖片，達成完整的容錯保護。」
+      </div>
+    </div>
+
+    <!-- Slide 13 -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <span class="slide-badge">Slide 13</span>
+          <span class="slide-title">04 · CHALLENGES &amp; OVERCOMING：開發實作難題與技術克服</span>
+        </div>
+        <span class="timing-badge">1:50 - 2:45</span>
+      </div>
+      <div class="cue-box">📢【螢幕切換】按 Alt+Tab 切回投影片 Slide 13，展現技術排錯深度。</div>
+      <div class="speech-text">
+        「在專案開發過程中，我們遇到了 5 大關鍵技術挑戰，並逐一攻關克服：
+        第一，<strong>刪除資料重整後復現</strong>：初期只重繪 DOM 漏了存檔，後來統一將所有增刪改收攏至 <span class="tech-highlight">StallStore</span> Class 內部自動執行 <span class="tech-highlight">save()</span>；」
+      </div>
+      <div class="speech-text">
+        「第二，<strong>ion-fab 點擊無反應</strong>：發現誤放於 content 外層，移回內部並宣告 <span class="tech-highlight">slot="fixed"</span> 恢復正常；
+        第三，<strong>Google Maps 中文亂碼</strong>：使用 <span class="tech-highlight">encodeURIComponent()</span> 統一封裝中文 query；
+        第四，<strong>深色模式文字對比度衝突</strong>：使用自訂 CSS 變數配合 <span class="tech-highlight">!important</span> 強制覆寫顏色；
+        第五，<strong>弱網環境 CDN 解析白屏</strong>：加入原生行內 CSS 啟動 Splash 畫面，App 初始化完成後平滑淡出。」
+      </div>
+    </div>
+
+    <!-- Slide 14 -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <span class="slide-badge">Slide 14</span>
+          <span class="slide-title">04 · TEAM COLLABORATION：組員分工與個人貢獻說明 (10%)</span>
+        </div>
+        <span class="timing-badge">2:45 - 3:25</span>
+      </div>
+      <div class="cue-box">📢【動作】翻至 Slide 14，手勢涵蓋兩位隊友，展現三人均分與團隊默契。</div>
+      <div class="speech-text">
+        「在團隊分工上，我們三位組員各自負責明確的工程模組，平均貢獻：
+        <strong>范子軒</strong>負責資料架構與持久化工程，主導雙 Class 封裝、localStorage 存取與統計演算法；
+        <strong>王振威</strong>負責 UI 導航、地圖整合與互動工程，建置四大主頁面、Google Maps Universal Link 與即時搜尋篩選；」
+      </div>
+      <div class="speech-text">
+        「<strong>魏凱耀</strong>我本人負責 API 串接、表單防呆與體驗工程，實作 TheMealDB 異步串接、5 大防呆規則、Toast 反饋與深色模式。
+        最重要的是，<strong>我們三位組員都對全專案的代碼邏輯有完整理解，能夠隨時互相支援與個別答辯</strong>。」
+      </div>
+    </div>
+
+    <!-- Slide 15 -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <span class="slide-badge">Slide 15</span>
+          <span class="slide-title">PROJECT SUMMARY &amp; ORAL DEFENSE：專題總結與提問 Q&amp;A</span>
+        </div>
+        <span class="timing-badge">3:25 - 4:00</span>
+      </div>
+      <div class="cue-box">👏【全組動作】翻至 Slide 15，三位同學一齊站立面向導師，微笑致謝，迎接個別提問。</div>
+      <div class="speech-text">
+        「總結而言，《小食地圖 SnackMap》成功將全期 10 堂課所學，無縫轉化為一個功能完整、流暢且具實用價值的 Web App。
+        我們已做好充分準備迎接導師的個別提問：
+        <strong>范子軒</strong>負責架構與資料層答辯；
+        <strong>王振威</strong>負責介面與地圖導航答辯；
+        <strong>魏凱耀</strong>負責 API 與驗證體驗答辯。」
+      </div>
+      <div class="speech-text">
+        「我們的匯報到此結束，多謝各位導師及同學，歡迎提問指導！」
+      </div>
+    </div>
+
+    <!-- 第三部分防守 Q&A -->
+    <div class="qa-box">
+      <div class="qa-title">💡 第三部分講者 · 專屬防守問答備忘</div>
+      <div class="qa-item">
+        <div class="qa-q">Q: 如果 TheMealDB API 斷網或連線過慢，程式會不會卡死？</div>
+        <div class="qa-a">A: 絕不會！我們在 fetch 請求加入了 AbortController，設定 8 秒超時自動中斷；並且在外層以 try...catch 捕捉異常，若斷線會優雅降級顯示離線提示圖標，連破損圖片也有監聽自動移除。</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  function switchSpeaker(speakerId) {
+    const buttons = document.querySelectorAll('.tab-btn');
+    buttons.forEach(btn => btn.classList.remove('active'));
+    
+    const activeBtn = Array.from(buttons).find(b => b.getAttribute('onclick').includes(speakerId));
+    if (activeBtn) activeBtn.classList.add('active');
+
+    const sections = document.querySelectorAll('.speech-section');
+    if (speakerId === 'all') {
+      sections.forEach(sec => sec.classList.add('active'));
+    } else {
+      sections.forEach(sec => sec.classList.remove('active'));
+      const targetSec = document.getElementById(speakerId);
+      if (targetSec) targetSec.classList.add('active');
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  let currentFontSize = 16;
+  function adjustFontSize(delta) {
+    currentFontSize += delta;
+    if (currentFontSize < 13) currentFontSize = 13;
+    if (currentFontSize > 22) currentFontSize = 22;
+    document.querySelectorAll('.speech-text').forEach(el => {
+      el.style.fontSize = currentFontSize + 'px';
+    });
+  }
+</script>
+
+</body>
+</html>
